@@ -8,14 +8,80 @@
     height: 200px;
     border: 1px solid black;
     margin: auto;
+	overflow: hidden;
 }
 #character{
-    width: 20px;
-    height: 50px;
-    background-color: red;
-    position:relative;
-    top: 150px;
+    background-size: contain;
+    top: 15px;
+    position: absolute;
 }
+
+.walk1 {
+	background-image: url('walk1/132.png');
+	width: 86px;
+	height: 185px;
+}
+.walk2 {
+	background-image: url('walk1/133.png');
+	width: 86px;
+	height: 185px;
+}
+.walk3 {
+	background-image: url('walk1/134.png');
+	width: 86px;
+	height: 185px;
+}
+.walk4 {
+	background-image: url('walk1/135.png');
+	width: 86px;
+	height: 185px;
+}
+.walk5 {
+	background-image: url('walk1/136.png');
+	width: 86px;
+	height: 185px;
+}
+.walk6 {
+	background-image: url('walk1/137.png');
+	width: 86px;
+	height: 185px;
+}
+.kick1 {
+	background-image: url('kick1/631.png');
+	width: 75px;
+	height: 185px;
+}
+.kick2 {
+	background-image: url('kick1/632.png');
+	width:101px;
+	height: 185px;
+}
+.kick3 {
+	background-image: url('kick1/633.png');
+	width:133px;
+	height: 185px;
+}
+.kick4 {
+	background-image: url('kick1/634.png');
+	width:133px;
+	height: 185px;
+}
+.kick5 {
+	background-image: url('kick1/635.png');
+	width: 96px;
+	height: 185px;
+}
+.kick6 {
+	background-image: url('kick1/636.png');
+	width: 79px;
+	height: 185px;
+}
+.kick7 {
+	background-image: url('kick1/637.png');
+	width: 72px;
+	height: 185px;
+}
+
 .animate{
     animation: jump 0.3s linear;
 }
@@ -27,13 +93,13 @@
 }
 
 #block{
+    z-index: 100;
     background-color: blue;
     width: 20px;
     height: 20px;
     position: relative;
     top: 130px;
     left: 500px;
-    animation: block 1s infinite linear;
 }
 @keyframes block{
     0%{left: 500px}
