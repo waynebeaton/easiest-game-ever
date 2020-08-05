@@ -11,10 +11,10 @@ function jump(){
 }
 
 var walk1 = {
-	frames: ["walk1", "walk2", "walk3"]
+	frames: ["walk1", "walk2"]
 }
 var walk2 = {
-	frames: ["walk4", "walk5", "walk6"]
+	frames: ["walk3", "walk4"]
 }
 var kick1 = {
 	frames: ["kick1", "kick2"]
