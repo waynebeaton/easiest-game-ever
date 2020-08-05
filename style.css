@@ -5,7 +5,7 @@
 }
 .game{
     width: 500px;
-    height: 200px;
+    height: 240px;
     border: 1px solid black;
     margin: auto;
 	overflow: hidden;
@@ -14,6 +14,104 @@
     background-size: contain;
     top: 15px;
     position: absolute;
+}
+
+
+.walkleft1 {
+	background-image: url('walkleft/690.png');
+	width: 80px;
+	height: 240px;
+}
+
+.walkleft2 {
+	background-image: url('walkleft/689.png');
+	width: 79px;
+	height: 240px;
+}
+
+.walkleft3 {
+	background-image: url('walkleft/688.png');
+	width: 68px;
+	height: 240px;
+}
+
+.walkleft4 {
+	background-image: url('walkleft/687.png');
+	width: 69px;
+	height: 240px;
+}
+
+.walkleft5 {
+	background-image: url('walkleft/683.png');
+	width: 86px;
+	height: 240px;
+}
+
+.walkright1 {
+	background-image: url('walkright/622.png');
+	width: 92px;
+	height: 240px;
+}
+
+.walkright2 {
+	background-image: url('walkright/621.png');
+	width: 89px;
+	height: 240px;
+}
+
+.walkright3 {
+	background-image: url('walkright/620.png');
+	width: 71px;
+	height: 240px;
+}
+
+.walkright4 {
+	background-image: url('walkright/619.png');
+	width: 67px;
+	height: 240px;
+}
+
+.walkright5 {
+	background-image: url('walkright/618.png');
+	width: 76px;
+	height: 240px;
+}
+
+
+.roundhouse1 {
+	background-image: url('roundhouse/438.png');
+	width: 85px;
+	height: 240px;
+}
+.roundhouse2 {
+	background-image: url('roundhouse/439.png');
+	width: 100px;
+	height: 240px;
+}
+.roundhouse3 {
+	background-image: url('roundhouse/440.png');
+	width: 150px;
+	height: 240px;
+}
+.roundhouse4 {
+	background-image: url('roundhouse/441.png');
+	width: 158px;
+	height: 240px;
+}
+.roundhouse5 {
+	background-image: url('roundhouse/443.png');
+	width: 108px;
+	height: 240px;
+}
+.roundhouse6 {
+	background-image: url('roundhouse/445.png');
+	width: 95px;
+	height: 240px;
+}
+.roundhouse7 {
+	background-image: url('roundhouse/447.png');
+	width: 96px;
+	height: 240px;
 }
 
 .walk1 {

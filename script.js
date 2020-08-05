@@ -11,10 +11,10 @@ function jump(){
 }
 
 var walk1 = {
-	frames: ["walk1", "walk2"]
+	frames: ["walkright1", "walkright2", "walkright3", "walkright4", "walkright5"]
 }
 var walk2 = {
-	frames: ["walk3", "walk4"]
+	frames: ["walkleft1", "walkleft2", "walkleft3", "walkleft4", "walkleft5"]
 }
 var kick1 = {
 	frames: ["kick1", "kick2"]
@@ -25,18 +25,35 @@ var kick2 = {
 var kick3 = {
 	frames: ["kick5", "kick6"]
 }
+
+var roundhouse1 = {
+	frames: ["roundhouse1", "roundhouse2"]
+}
+var roundhouse2 = {
+	frames: ["roundhouse3", "roundhouse4"]
+}
+var roundhouse3 = {
+	frames: ["roundhouse5", "roundhouse6", "roundhouse7"]
+}
+
 var hit1 = {
 	images: ["url('hit1.jpg')"]
 }
 walk1.next = walk2;
-//walk1.kick = kick1;
+walk1.kick = roundhouse1;
 walk1.hit = hit1;
+
 walk2.next = walk1;
 walk2.kick = kick1;
 walk2.hit = hit1;
+
 kick1.next = kick2;
 kick2.next = kick3;
 kick3.next = walk1;
+
+roundhouse1.next = roundhouse2;
+roundhouse2.next = roundhouse3;
+roundhouse3.next = walk2;
 
 var hero = {
 	move: walk1,
@@ -95,7 +112,7 @@ function playGame() {
 		game.style.backgroundPosition = position;
 	   
 		if (character.offsetLeft + character.offsetWidth > block.offsetLeft) {
-			if (hero.move == kick2) {
+			if (hero.move == kick2 || hero.move == roundhouse2) {
 	       		enemy.reset();
 			} else {
 				clearInterval(play);
