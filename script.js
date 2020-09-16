@@ -1,72 +1,125 @@
 var game = document.getElementById("game");
 var character = document.getElementById("character");
 var block = document.getElementById("block");
-var counter=0;
-function jump(){
-    if(character.classList == "animate"){return}
-    character.classList.add("animate");
-    setTimeout(function(){
-        character.classList.remove("animate");
-    },300);
-}
 
 var walk1 = {
-	frames: ["walkright1", "walkright2", "walkright3", "walkright4", "walkright5"]
+	frames: ["walkright1", "walkright2", "walkright3", "walkright4", "walkright5"],
+	next: function() {
+		return walk2;
+	},
+	kick: function() {
+		return roundhouse1;
+	},
+	hit: function(me, enemy) {
+		me.fall();
+		enemy.reset();
+	}
 }
 var walk2 = {
-	frames: ["walkleft1", "walkleft2", "walkleft3", "walkleft4", "walkleft5"]
+	frames: ["walkleft1", "walkleft2", "walkleft3", "walkleft4", "walkleft5"],
+	next: function() {
+		return walk1;
+	},
+	kick: function() {
+		return kick1;
+	},
+	hit: function(me, enemy) {
+		me.fall();
+		enemy.reset();
+	}
 }
 var kick1 = {
-	frames: ["kick1", "kick2"]
+	frames: ["kick1", "kick2"],
+	next: function() {
+		return kick2;
+	},
+	hit: function(me, enemy) {
+		me.fall();
+		enemy.reset();
+	}
 }
 var kick2 = {
-	frames: ["kick3", "kick4", "kick4", "kick4"]
+	frames: ["kick3", "kick4", "kick4", "kick4"],
+	next: function() {
+		return kick3;
+	},
+	hit: function(me, enemy) {
+		enemy.reset();
+	}
 }
 var kick3 = {
-	frames: ["kick5", "kick6"]
+	frames: ["kick5", "kick6"],
+	next: function() {
+		return walk1;
+	},
+	hit: function(me, enemy) {
+		me.fall();
+		enemy.reset();
+	}
 }
 
 var roundhouse1 = {
-	frames: ["roundhouse1", "roundhouse2"]
+	frames: ["roundhouse1", "roundhouse2"],
+	next: function() {
+		return roundhouse2;
+	},
+	hit: function(me, enemy) {
+		me.fall();
+		enemy.reset();
+	}
 }
 var roundhouse2 = {
-	frames: ["roundhouse3", "roundhouse4"]
+	frames: ["roundhouse3", "roundhouse4"],
+	next: function() {
+		return roundhouse3;
+	},
+	hit: function(me, enemy) {
+		enemy.reset();
+	}
 }
 var roundhouse3 = {
-	frames: ["roundhouse5", "roundhouse6", "roundhouse7"]
+	frames: ["roundhouse5", "roundhouse6", "roundhouse7"],
+	next: function() {
+		return walk2;
+	},
+	hit: function(me, enemy) {
+		me.fall();
+		enemy.reset();
+	}
 }
 
 var hit1 = {
-	images: ["url('hit1.jpg')"]
+	frames: ["hit1", "hit2", "hit3", "hit4"],
+	next: function() {
+		reset();
+		return walk1;
+	},
+	hit: function(me, enemy) {
+	}
 }
-walk1.next = walk2;
-walk1.kick = roundhouse1;
-walk1.hit = hit1;
-
-walk2.next = walk1;
-walk2.kick = kick1;
-walk2.hit = hit1;
-
-kick1.next = kick2;
-kick2.next = kick3;
-kick3.next = walk1;
-
-roundhouse1.next = roundhouse2;
-roundhouse2.next = roundhouse3;
-roundhouse3.next = walk2;
 
 var hero = {
 	move: walk1,
 	kickNext: false,
 	frame: 0,
+	reset: function() {
+		move: walk1;
+		kickNext: false;
+		frame: 0;
+	},
 	step: function() {
 		if (++this.frame >= this.move.frames.length) {
-			this.frame = 0;
-			if (this.kickNext && this.move.kick != null) {
-				this.kickNext = false;
-				this.move = this.move.kick;
+			if (this.move.next == null) {
+				this.frame--;
+				reset();
 			} else {
-				this.move = this.move.next;
+				this.frame = 0;
+				if (this.kickNext && this.move.kick != null) {
+					this.kickNext = false;
+					this.move = this.move.kick();
+				} else {
+					this.move = this.move.next();
+				}
 			}
 		}			
 	},
@@ -75,6 +128,13 @@ var hero = {
 	},
 	kick: function() {
 		this.kickNext = true;
+	},
+	hit: function(enemy) {
+		this.move.hit(this, enemy);
+	},
+	fall: function() {
+		this.move = hit1;
+		this.frame = 0;
 	}
 };
 
@@ -94,15 +154,17 @@ var enemy = {
 	}
 }
 
+var play;
 function playGame() {
-	//game.style.backgroundImage = "url('trees.jpg')";
+	hero.reset();
+	enemy.reset();
 	game.onclick = function() {
 		hero.kick();
 	};
 	
 	var x = 0;
 
-	var play = setInterval(function() {
+	play = setInterval(function() {
 		hero.step();
 		enemy.step();
 
@@ -112,12 +174,13 @@ function playGame() {
 		game.style.backgroundPosition = position;
 	   
 		if (character.offsetLeft + character.offsetWidth > block.offsetLeft) {
-			if (hero.move == kick2 || hero.move == roundhouse2) {
-	       		enemy.reset();
-			} else {
-				clearInterval(play);
-			}
+			hero.hit(enemy);
 		}
 
 	}, 100);
+}
+
+function reset() {
+	clearInterval(play);
+	game.onclick = playGame;
 }
