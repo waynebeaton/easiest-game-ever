@@ -92,20 +92,17 @@ var hit1 = {
 	frames: ["hit1", "hit2", "hit3", "hit4"],
 	next: function() {
 		reset();
-		return walk1;
+		return null;
 	},
 	hit: function(me, enemy) {
 	}
 }
 
 var hero = {
-	move: walk1,
-	kickNext: false,
-	frame: 0,
 	reset: function() {
-		move: walk1;
-		kickNext: false;
-		frame: 0;
+		this.move = walk1;
+		this.kickNext = false;
+		this.frame = 0;
 	},
 	step: function() {
 		if (++this.frame >= this.move.frames.length) {
@@ -139,8 +136,6 @@ var hero = {
 };
 
 var enemy = {
-	x: 500,
-	speed: 5,
 	step: function() {
 		this.x -= this.speed;
 		if (this.x < 0) {
