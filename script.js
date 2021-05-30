@@ -1,106 +1,11 @@
 var game = document.getElementById("game");
 var character = document.getElementById("character");
 var block = document.getElementById("block");
-
-var walk1 = {
-	frames: ["walkright1", "walkright2", "walkright3", "walkright4", "walkright5"],
-	next: function() {
-		return walk2;
-	},
-	kick: function() {
-		return roundhouse1;
-	},
-	hit: function(me, enemy) {
-		me.fall();
-		enemy.reset();
-	}
-}
-var walk2 = {
-	frames: ["walkleft1", "walkleft2", "walkleft3", "walkleft4", "walkleft5"],
-	next: function() {
-		return walk1;
-	},
-	kick: function() {
-		return kick1;
-	},
-	hit: function(me, enemy) {
-		me.fall();
-		enemy.reset();
-	}
-}
-var kick1 = {
-	frames: ["kick1", "kick2"],
-	next: function() {
-		return kick2;
-	},
-	hit: function(me, enemy) {
-		me.fall();
-		enemy.reset();
-	}
-}
-var kick2 = {
-	frames: ["kick3", "kick4", "kick4", "kick4"],
-	next: function() {
-		return kick3;
-	},
-	hit: function(me, enemy) {
-		enemy.reset();
-	}
-}
-var kick3 = {
-	frames: ["kick5", "kick6"],
-	next: function() {
-		return walk1;
-	},
-	hit: function(me, enemy) {
-		me.fall();
-		enemy.reset();
-	}
-}
-
-var roundhouse1 = {
-	frames: ["roundhouse1", "roundhouse2"],
-	next: function() {
-		return roundhouse2;
-	},
-	hit: function(me, enemy) {
-		me.fall();
-		enemy.reset();
-	}
-}
-var roundhouse2 = {
-	frames: ["roundhouse3", "roundhouse4"],
-	next: function() {
-		return roundhouse3;
-	},
-	hit: function(me, enemy) {
-		enemy.reset();
-	}
-}
-var roundhouse3 = {
-	frames: ["roundhouse5", "roundhouse6", "roundhouse7"],
-	next: function() {
-		return walk2;
-	},
-	hit: function(me, enemy) {
-		me.fall();
-		enemy.reset();
-	}
-}
-
-var hit1 = {
-	frames: ["hit1", "hit2", "hit3", "hit4"],
-	next: function() {
-		reset();
-		return null;
-	},
-	hit: function(me, enemy) {
-	}
-}
+var score = 0;
 
 var hero = {
 	reset: function() {
-		this.move = walk1;
+		this.move = this.segments["walk1"];
 		this.kickNext = false;
 		this.frame = 0;
 	},
@@ -113,12 +18,12 @@ var hero = {
 				this.frame = 0;
 				if (this.kickNext && this.move.kick != null) {
 					this.kickNext = false;
-					this.move = this.move.kick();
+					this.move = this.segments[this.move.kick];
 				} else {
-					this.move = this.move.next();
+					this.move = this.segments[this.move.next];
 				}
 			}
-		}			
+		}
 	},
 	getFrame: function() {
 		return this.move.frames[this.frame];
@@ -130,8 +35,80 @@ var hero = {
 		this.move.hit(this, enemy);
 	},
 	fall: function() {
-		this.move = hit1;
+		this.move = hero.segments.hit1;
 		this.frame = 0;
+	},
+	segments: {
+		"walk1" : {
+			frames: ["walkright1", "walkright2", "walkright3", "walkright4", "walkright5"],
+			next: "walk2",
+			kick: "roundhouse1",
+			hit: function(me, enemy) {
+				me.fall();
+				enemy.reset();
+			}
+		},
+		"walk2" : {
+			frames: ["walkleft1", "walkleft2", "walkleft3", "walkleft4", "walkleft5"],
+			next: "walk1",
+			kick: "kick1",
+			hit: function(me, enemy) {
+				me.fall();
+				enemy.reset();
+			}
+		},
+		"kick1": {
+			frames: ["kick1", "kick2"],
+			next: "kick2",
+			hit: function(me, enemy) {
+				me.fall();
+				enemy.reset();
+			}
+		},
+		"kick2": {
+			frames: ["kick3", "kick4", "kick4", "kick4"],
+			next: "kick3",
+			hit: function(me, enemy) {
+				enemy.destroy();
+			}
+		},
+		"kick3": {
+			frames: ["kick5", "kick6"],
+			next: "walk1",
+			hit: function(me, enemy) {
+				me.fall();
+				enemy.reset();
+			}
+		},
+		"roundhouse1": {
+			frames: ["roundhouse1", "roundhouse2"],
+			next: "roundhouse2",
+			hit: function(me, enemy) {
+				me.fall();
+				enemy.reset();
+			}
+		},
+		"roundhouse2": {
+			frames: ["roundhouse3", "roundhouse4"],
+			next: "roundhouse3",
+			hit: function(me, enemy) {
+				enemy.destroy();
+			}
+		},
+		"roundhouse3": {
+			frames: ["roundhouse5", "roundhouse6", "roundhouse7"],
+			next: "walk2",
+			hit: function(me, enemy) {
+				me.fall();
+				enemy.reset();
+			}
+		},
+		"hit1": {
+			frames: ["hit1", "hit2", "hit3", "hit4"],
+			next: null,
+			hit: function(me, enemy) {
+			}
+		}
 	}
 };
 
@@ -146,6 +123,11 @@ var enemy = {
 	reset: function() {
 		this.x = 500;
 		this.speed = 3 + Math.floor(Math.random() * 5); 
+	},
+	destroy: function() {
+		score += this.speed;
+		document.getElementById("score").textContent=score;
+		this.reset();
 	}
 }
 
@@ -164,7 +146,7 @@ function playGame() {
 		enemy.step();
 
 		character.classList = [hero.getFrame()];
-		x -= 1;
+		x -= 3;
 		position = x.toString() +"px 0px";
 		game.style.backgroundPosition = position;
 	   
